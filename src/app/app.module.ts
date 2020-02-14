@@ -4,8 +4,12 @@ import { RouteReuseStrategy } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -13,7 +17,10 @@ import { AppComponent } from './app.component';
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
-        AppRoutingModule
+        IonicStorageModule.forRoot(),
+        AppRoutingModule,
+        CoreModule,
+        SharedModule,
     ],
     providers: [
         StatusBar,

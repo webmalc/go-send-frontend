@@ -9,7 +9,7 @@
         "no-consecutive-blank-lines": [true, 2],
         "newline-before-return": true,
         "indent": [true, "spaces", 4],
-        "max-line-length": [true, 80],
+        "max-line-length": [true, 79],
         "variable-name": {
             "options": [
                 "ban-keywords",

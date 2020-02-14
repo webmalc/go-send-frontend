@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
+import { DarkModeService } from './core/services/dark-mode.service';
 
 @Component({
     selector: 'app-root',
@@ -10,6 +11,7 @@ import { Platform } from '@ionic/angular';
 })
 export class AppComponent implements OnInit {
     public selectedIndex = 0;
+    public darkMode = true;
     public appPages = [
         {
             title: 'Inbox',
@@ -43,21 +45,34 @@ export class AppComponent implements OnInit {
         }
     ];
 
-    public readonly labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
     constructor(
         private readonly platform: Platform,
         private readonly splashScreen: SplashScreen,
-        private readonly statusBar: StatusBar
+        private readonly statusBar: StatusBar,
+        private readonly darkModeService: DarkModeService,
     ) {
         this.initializeApp();
     }
 
+    // Initializes the application
     initializeApp() {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
+            this.initDarkMode();
         });
+    }
+
+    // Initializes dark mode
+    initDarkMode(): void {
+        this.darkModeService.isDarkMode().then((mode: boolean) => {
+            this.darkMode = mode;
+        });
+    }
+
+    // Toggles the dark mode
+    toggleDarkMode(): void {
+        this.darkMode = this.darkModeService.toggle(this.darkMode);
     }
 
     ngOnInit() {
