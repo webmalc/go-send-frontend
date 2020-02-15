@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-list>
+                <form (ngSubmit)="login()" #loginForm="ngForm">
+                <ion-item>
+                    <ion-icon name="person" slot="start"></ion-icon>
+                    <ion-input [(ngModel)]="credentials.username" name="username" placeholder="username" id="username" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-icon name="lock-closed" slot="start"></ion-icon>
+                    <ion-input [(ngModel)]="credentials.password" name="password" type="password" placeholder="password" id="password" required></ion-input>
+                </ion-item>
+
+                <ion-button class="ion-margin-top ion-margin-start" type="submit" [disabled]="!loginForm.form.valid" color="primary">
+                    Login
+                    <!-- Emulate submit using the enter button -->
+                    <input type="submit" [disabled]="!loginForm.form.valid" class="ion-hide">
+                </ion-button>
+                </form>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

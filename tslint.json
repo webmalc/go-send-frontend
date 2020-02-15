@@ -4,6 +4,12 @@
         "codelyzer"
     ],
     "rules": {
+        "typedef": [
+            true,
+            "property-declaration",
+            "call-signature",
+            "parameter"
+        ],
         "no-trailing-whitespace": true,
         "no-irregular-whitespace": true,
         "no-consecutive-blank-lines": [true, 2],
@@ -68,20 +74,36 @@
             true,
             140
         ],
-        "member-access": false,
+        "member-access": [true, "no-public"],
         "member-ordering": [
             true,
             {
                 "order": [
-                    "static-field",
-                    "instance-field",
-                    "static-method",
-                    "instance-method"
+                    "public-static-field",
+                    "protected-static-field",
+                    "private-static-field",
+
+                    "public-instance-field",
+                    "protected-instance-field",
+                    "private-instance-field",
+
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+
+                    "public-static-method",
+                    "protected-static-method",
+                    "private-static-method",
+
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method"
                 ]
             }
         ],
         "no-console": [
             true,
+            "log",
             "debug",
             "info",
             "time",

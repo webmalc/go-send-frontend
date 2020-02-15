@@ -1,12 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DarkModeService } from '@core/services/dark-mode.service';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { AppComponent } from './app.component';
-import { DarkModeService } from './core/services/dark-mode.service';
 
 describe('AppComponent', () => {
 

@@ -3,12 +3,18 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Go-send</ion-list-header>
+            <ion-list-header>
+                <ion-label>Go-send</ion-label>
+                <ion-button *ngIf="user" (click)="logout()" color="dark">
+                    logout
+                    <ion-icon slot="end" name="log-out-outline"></ion-icon>
+                </ion-button>
+            </ion-list-header>
           <ion-item button (click)="toggleDarkMode()">
               <ion-label>
                   Dark mode
               </ion-label>
-              <ion-icon name="moon-outline" slot="end"></ion-icon>
+              <ion-icon name="moon" slot="end"></ion-icon>
           </ion-item>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
