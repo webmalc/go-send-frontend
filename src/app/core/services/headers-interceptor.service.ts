@@ -2,7 +2,6 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { ApiService } from '@core/services/api.service';
 import { AuthService } from '@core/services/auth.service';
-import { environment } from '@environment/environment';
 import { User } from '@shared/models/user';
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';

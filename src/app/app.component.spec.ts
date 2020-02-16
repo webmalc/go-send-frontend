@@ -1,11 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from '@core/services/auth.service';
 import { DarkModeService } from '@core/services/dark-mode.service';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
+import { User } from '@shared/models/user';
+import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -15,6 +19,8 @@ describe('AppComponent', () => {
     let platformSpy: jasmine.SpyObj<Platform>;
     let fixture: ComponentFixture<AppComponent>;
     let darkModeServiceSpy: jasmine.SpyObj<DarkModeService>;
+    let authSpy: jasmine.SpyObj<AuthService>;
+    let routerSpy: jasmine.SpyObj<Router>;
 
     beforeEach(async(() => {
         const statusBar = jasmine.createSpyObj('StatusBar', ['styleDefault']);
@@ -26,6 +32,16 @@ describe('AppComponent', () => {
             'DarkModeService',
             { isDarkMode: Promise.resolve(true), toggle: false },
         );
+        const auth = jasmine.createSpyObj(
+            'AuthService', { login: of(true) }
+        );
+        auth.user$ = jasmine.createSpyObj(
+            'user$', { subscribe: of(new User('user', 'pass')) }
+        );
+
+        const router = jasmine.createSpyObj(
+            'Router', ['navigateByUrl']
+        );
 
         TestBed.configureTestingModule({
             declarations: [AppComponent],
@@ -35,7 +51,14 @@ describe('AppComponent', () => {
                 { provide: SplashScreen, useValue: splashScreen },
                 { provide: Platform, useValue: platformJasmine },
                 { provide: DarkModeService, useValue: darkModeService },
+                { provide: AuthService, useValue: auth },
+                { provide: Router, useValue: router },
                 { provide: ComponentFixtureAutoDetect, useValue: true },
+                {
+                    provide: ActivatedRoute, useValue: {
+                        params: of({ id: 'Inbox' })
+                    }
+                },
             ],
             imports: [
                 RouterTestingModule.withRoutes([]),
@@ -47,6 +70,8 @@ describe('AppComponent', () => {
         statusBarSpy = TestBed.get(StatusBar);
         splashScreenSpy = TestBed.get(SplashScreen);
         platformSpy = TestBed.get(Platform);
+        authSpy = TestBed.get(AuthService);
+        routerSpy = TestBed.get(Router);
         darkModeServiceSpy = TestBed.get(DarkModeService);
     }));
 
@@ -65,9 +90,9 @@ describe('AppComponent', () => {
     it('should have menu labels', async () => {
         const app = fixture.nativeElement;
         const menuItems = app.querySelectorAll('ion-label');
-        expect(menuItems.length).toEqual(7);
-        expect(menuItems[1].textContent).toContain('Inbox');
-        expect(menuItems[2].textContent).toContain('Outbox');
+        expect(menuItems.length).toEqual(8);
+        expect(menuItems[2].textContent).toContain('Inbox');
+        expect(menuItems[3].textContent).toContain('Outbox');
     });
 
     it('should have urls', async () => {
