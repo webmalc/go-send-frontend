@@ -14,12 +14,18 @@ export class ApiService {
 
     constructor(private readonly http: HttpClient) { }
 
+    // Returns the authentication header
+    getAuthHeader(credentials: Credentials): string {
+        const token = `${credentials.username}:${credentials.password}`;
+
+        return 'Basic ' + btoa(token);
+    }
+
     // Tests the API
     ping(credentials: Credentials): Observable<object> {
-        const authString = `${credentials.username}:${credentials.password}`;
         const httpOptions = {
             headers: new HttpHeaders({
-                Authorization: 'Basic ' + btoa(authString)
+                Authorization: this.getAuthHeader(credentials)
             })
         };
 
