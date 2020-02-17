@@ -76,7 +76,12 @@
         ],
         "interface-name": false,
         "max-classes-per-file": false,
-        "member-access": [true, "no-public"],
+        "member-access": [
+            true,
+            "check-accessor",
+            "check-constructor",
+            "check-parameter-property"
+        ],
         "member-ordering": [
             true,
             {

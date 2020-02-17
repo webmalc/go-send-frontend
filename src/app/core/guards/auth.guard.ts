@@ -12,12 +12,12 @@ type Guard = Observable<boolean | UrlTree>;
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(
+    public constructor(
         private readonly router: Router,
         private readonly auth: AuthService,
     ) { }
 
-    canActivate(): Guard {
+    public canActivate(): Guard {
 
         return new Observable<boolean | UrlTree>(subscriber => {
 
@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
         });
     }
 
-    canActivateChild(): Guard {
+    public canActivateChild(): Guard {
         return this.canActivate();
     }
 }

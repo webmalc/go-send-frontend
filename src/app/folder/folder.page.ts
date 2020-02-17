@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TitleService } from '@core/services/title.service';
 
 @Component({
     selector: 'app-folder',
@@ -7,13 +8,17 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-    folder: string;
+    public folder: string;
 
-    constructor(private readonly activatedRoute: ActivatedRoute) { }
+    public constructor(
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly titleService: TitleService,
+    ) { }
 
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+        this.titleService.setTitle(this.folder);
     }
 
 }

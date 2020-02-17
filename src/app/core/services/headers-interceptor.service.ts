@@ -10,21 +10,13 @@ import { switchMap, take } from 'rxjs/operators';
 @Injectable()
 export class HeadersInterceptor implements HttpInterceptor {
 
-    constructor(
+    public constructor(
         private readonly auth: AuthService,
         private readonly api: ApiService,
     ) { }
 
-    // Checks if the request URL belongs the API
-    isApiUrl(url: string): boolean {
-        const requestUrl = new URL(url);
-        const apiUrl = new URL(this.api.baseUrl);
-
-        return requestUrl.origin === apiUrl.origin;
-    }
-
     // Intercepts requests
-    intercept(
+    public intercept(
         req: HttpRequest<any>, next: HttpHandler
     ): Observable<HttpEvent<any>> {
         try {
@@ -49,4 +41,13 @@ export class HeadersInterceptor implements HttpInterceptor {
             return next.handle(req.clone({ headers }));
         }));
     }
+
+    // Checks if the request URL belongs the API
+    private isApiUrl(url: string): boolean {
+        const requestUrl = new URL(url);
+        const apiUrl = new URL(this.api.baseUrl);
+
+        return requestUrl.origin === apiUrl.origin;
+    }
+
 }

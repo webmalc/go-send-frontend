@@ -11,28 +11,36 @@ import { Credentials } from '@shared/models/user';
 })
 export class AuthPage implements OnInit {
 
-    credentials: Credentials = {};
+    public credentials: Credentials = {};
 
-    constructor(
+    public constructor(
         private readonly auth: AuthService,
         private readonly router: Router,
         private readonly toastController: ToastController,
     ) { }
 
-    login(): void {
+    public login(): void {
         this.auth.login(this.credentials).subscribe(
             () => { this.redirect(); },
             () => { this.showError(); },
         );
     }
 
+    public ngOnInit(): void {
+        this.auth.user$.subscribe((user) => {
+            if (user) {
+                this.redirect();
+            }
+        });
+    }
+
     // Redirect to the main page
-    redirect(): void {
+    private redirect(): void {
         this.router.navigateByUrl('/');
     }
 
     // Show an error
-    async showError(): Promise<void> {
+    private async showError(): Promise<void> {
         const toast = await this.toastController.create({
             message: 'The username or password is incorrect.',
             color: 'danger',
@@ -41,11 +49,4 @@ export class AuthPage implements OnInit {
         toast.present();
     }
 
-    ngOnInit(): void {
-        this.auth.user$.subscribe((user) => {
-            if (user) {
-                this.redirect();
-            }
-        });
-    }
 }

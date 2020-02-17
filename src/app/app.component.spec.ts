@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '@core/services/auth.service';
 import { DarkModeService } from '@core/services/dark-mode.service';
+import { TitleService } from '@core/services/title.service';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
@@ -21,6 +22,7 @@ describe('AppComponent', () => {
     let darkModeServiceSpy: jasmine.SpyObj<DarkModeService>;
     let authSpy: jasmine.SpyObj<AuthService>;
     let routerSpy: jasmine.SpyObj<Router>;
+    let titleSpy: jasmine.SpyObj<TitleService>;
 
     beforeEach(async(() => {
         const statusBar = jasmine.createSpyObj('StatusBar', ['styleDefault']);
@@ -39,6 +41,12 @@ describe('AppComponent', () => {
             'user$', { subscribe: of(new User('user', 'pass')) }
         );
 
+        const title = jasmine.createSpyObj('TitleService', ['setTitle']);
+        title.title$ = jasmine.createSpyObj(
+            'title$', { subscribe: of('test title') }
+        );
+
+
         const router = jasmine.createSpyObj(
             'Router', ['navigateByUrl']
         );
@@ -52,6 +60,7 @@ describe('AppComponent', () => {
                 { provide: Platform, useValue: platformJasmine },
                 { provide: DarkModeService, useValue: darkModeService },
                 { provide: AuthService, useValue: auth },
+                { provide: TitleService, useValue: title },
                 { provide: Router, useValue: router },
                 { provide: ComponentFixtureAutoDetect, useValue: true },
                 {
@@ -71,6 +80,7 @@ describe('AppComponent', () => {
         splashScreenSpy = TestBed.get(SplashScreen);
         platformSpy = TestBed.get(Platform);
         authSpy = TestBed.get(AuthService);
+        titleSpy = TestBed.get(TitleService);
         routerSpy = TestBed.get(Router);
         darkModeServiceSpy = TestBed.get(DarkModeService);
     }));

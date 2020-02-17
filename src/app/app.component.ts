@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { DarkModeService } from '@core/services/dark-mode.service';
+import { TitleService } from '@core/services/title.service';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
@@ -16,10 +17,11 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-    user: User;
-    selectedIndex = 0;
-    darkMode = true;
-    appPages = [
+    public user: User;
+    public selectedIndex = 0;
+    public darkMode = true;
+    public title: string;
+    public appPages = [
         {
             title: 'Inbox',
             url: '/folder/Inbox',
@@ -54,54 +56,31 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private userSubscription: Subscription;
 
-    constructor(
+    public constructor(
         private readonly platform: Platform,
         private readonly splashScreen: SplashScreen,
         private readonly statusBar: StatusBar,
         private readonly darkModeService: DarkModeService,
         private readonly router: Router,
         private readonly auth: AuthService,
+        private readonly titleService: TitleService,
     ) {
         this.initializeApp();
     }
 
-    // Initializes the application
-    initializeApp(): void {
-        this.platform.ready().then(() => {
-            this.statusBar.styleDefault();
-            this.splashScreen.hide();
-            this.initDarkMode();
-            this.initUser();
-        });
-    }
-
-    // Gets a user
-    initUser(): void {
-        this.userSubscription = this.auth.user$.subscribe(
-            (user: User) => { this.user = user; }
-        );
-    }
-
-    // Initializes dark mode
-    initDarkMode(): void {
-        this.darkModeService.isDarkMode().then((mode: boolean) => {
-            this.darkMode = mode;
-        });
-    }
-
     // Toggles the dark mode
-    toggleDarkMode(): void {
+    public toggleDarkMode(): void {
         this.darkMode = this.darkModeService.toggle(this.darkMode);
     }
 
     // Logouts the user
-    logout(): void {
+    public logout(): void {
         this.auth.logout();
         this.user = null;
         this.router.navigateByUrl('/auth/login');
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         const path = window.location.pathname.split('folder/')[1];
         if (path !== undefined) {
             this.selectedIndex = this.appPages.findIndex(
@@ -110,7 +89,41 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.userSubscription.unsubscribe();
     }
+
+    // Initializes the application
+    private initializeApp(): void {
+        this.platform.ready().then(() => {
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+            this.initDarkMode();
+            this.initUser();
+            this.initTitle();
+        });
+    }
+
+
+    // Gets the title
+    private initTitle(): void {
+        this.titleService.title$.subscribe((title: string) => {
+            this.title = title;
+        });
+    }
+
+    // Gets a user
+    private initUser(): void {
+        this.userSubscription = this.auth.user$.subscribe(
+            (user: User) => { this.user = user; }
+        );
+    }
+
+    // Initializes dark mode
+    private initDarkMode(): void {
+        this.darkModeService.isDarkMode().then((mode: boolean) => {
+            this.darkMode = mode;
+        });
+    }
+
 }

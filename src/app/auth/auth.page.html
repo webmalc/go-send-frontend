@@ -1,15 +1,7 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-    <ion-card>
-        <ion-card-content>
-            <ion-list>
-                <form (ngSubmit)="login()" #loginForm="ngForm">
+<ion-card>
+    <ion-card-content>
+        <ion-list>
+            <form (ngSubmit)="login()" #loginForm="ngForm">
                 <ion-item>
                     <ion-icon name="person" slot="start"></ion-icon>
                     <ion-input [(ngModel)]="credentials.username" name="username" placeholder="username" id="username" required></ion-input>
@@ -25,8 +17,7 @@
                     <!-- Emulate submit using the enter button -->
                     <input type="submit" [disabled]="!loginForm.form.valid" class="ion-hide">
                 </ion-button>
-                </form>
-            </ion-list>
-        </ion-card-content>
-    </ion-card>
-</ion-content>
+            </form>
+        </ion-list>
+    </ion-card-content>
+</ion-card>

@@ -10,19 +10,19 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-    baseUrl = environment.api;
+    public readonly baseUrl = environment.api;
 
-    constructor(private readonly http: HttpClient) { }
+    public constructor(private readonly http: HttpClient) { }
 
     // Returns the authentication header
-    getAuthHeader(credentials: Credentials): string {
+    public getAuthHeader(credentials: Credentials): string {
         const token = `${credentials.username}:${credentials.password}`;
 
         return 'Basic ' + btoa(token);
     }
 
     // Tests the API
-    ping(credentials: Credentials): Observable<object> {
+    public ping(credentials: Credentials): Observable<object> {
         const httpOptions = {
             headers: new HttpHeaders({
                 Authorization: this.getAuthHeader(credentials)
