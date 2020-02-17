@@ -24,7 +24,9 @@ export class HeadersInterceptor implements HttpInterceptor {
     }
 
     // Intercepts requests
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(
+        req: HttpRequest<any>, next: HttpHandler
+    ): Observable<HttpEvent<any>> {
         try {
             if (!this.isApiUrl(req.url)) {
                 return next.handle(req);
@@ -39,7 +41,9 @@ export class HeadersInterceptor implements HttpInterceptor {
                 .append('Content-Type', 'application/json');
 
             if (user) {
-                headers = headers.set('Authorization', this.api.getAuthHeader(user));
+                headers = headers.set(
+                    'Authorization', this.api.getAuthHeader(user)
+                );
             }
 
             return next.handle(req.clone({ headers }));

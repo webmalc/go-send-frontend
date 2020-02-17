@@ -14,9 +14,9 @@ describe('HeadersInterceptor', () => {
     beforeEach(() => {
         const api = jasmine.createSpyObj(
             'ApiService', {
-            baseUrl: "http://base.url/",
-            getAuthHeader: 'Basic: token'
-        }
+                baseUrl: 'http://base.url/',
+                getAuthHeader: 'Basic: token'
+            }
         );
         const auth = jasmine.createSpyObj(
             'AuthService', { user$: of(new User('user', 'pass')) }

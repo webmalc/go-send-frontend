@@ -99,8 +99,10 @@ describe('AppComponent', () => {
         const app = fixture.nativeElement;
         const menuItems = app.querySelectorAll('ion-item');
         expect(menuItems.length).toEqual(7);
-        expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/folder/Inbox');
-        expect(menuItems[2].getAttribute('ng-reflect-router-link')).toEqual('/folder/Outbox');
+        expect(menuItems[1].getAttribute('ng-reflect-router-link'))
+            .toEqual('/folder/Inbox');
+        expect(menuItems[2].getAttribute('ng-reflect-router-link'))
+            .toEqual('/folder/Outbox');
     });
 
     it('should toggle dark mode', async () => {

@@ -37,7 +37,9 @@ export class AuthService {
     get user$(): Observable<User> {
         const fromStorage = from(this.loadUser());
 
-        return concat(fromStorage, this.userSubject.asObservable().pipe(skip(1)));
+        return concat(
+            fromStorage, this.userSubject.asObservable().pipe(skip(1))
+        );
     }
 
     // Logins a user

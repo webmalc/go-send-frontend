@@ -15,7 +15,13 @@
         "no-consecutive-blank-lines": [true, 2],
         "newline-before-return": true,
         "indent": [true, "spaces", 4],
-        "max-line-length": [true, 79],
+        "max-line-length": [
+            true,
+            {
+                "limit": 79,
+                "ignore-pattern": "^import |^export {(.*?)}"
+            }
+        ],
         "variable-name": {
             "options": [
                 "ban-keywords",
@@ -70,10 +76,6 @@
         ],
         "interface-name": false,
         "max-classes-per-file": false,
-        "max-line-length": [
-            true,
-            140
-        ],
         "member-access": [true, "no-public"],
         "member-ordering": [
             true,

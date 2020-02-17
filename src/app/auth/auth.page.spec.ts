@@ -28,7 +28,9 @@ describe('AuthPage', () => {
             'Router', ['navigateByUrl']
         );
         const toast = jasmine.createSpyObj(
-            'ToastController', { create: Promise.resolve({ present: () => { } }) }
+            'ToastController', {
+                create: Promise.resolve({ present: () => null })
+            }
         );
         TestBed.configureTestingModule({
             declarations: [AuthPage],
