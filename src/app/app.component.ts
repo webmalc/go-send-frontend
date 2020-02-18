@@ -104,17 +104,16 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
-
     // Gets the title
     private initTitle(): void {
-        this.titleService.title$.subscribe((title: string) => {
+        this.titleService.getTitle().subscribe((title: string) => {
             this.title = title;
         });
     }
 
     // Gets a user
     private initUser(): void {
-        this.userSubscription = this.auth.user$.subscribe(
+        this.userSubscription = this.auth.getUser().subscribe(
             (user: User) => { this.user = user; }
         );
     }

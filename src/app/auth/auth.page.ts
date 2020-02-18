@@ -19,6 +19,7 @@ export class AuthPage implements OnInit {
         private readonly toastController: ToastController,
     ) { }
 
+    // login
     public login(): void {
         this.auth.login(this.credentials).subscribe(
             () => { this.redirect(); },
@@ -27,7 +28,7 @@ export class AuthPage implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.auth.user$.subscribe((user) => {
+        this.auth.getUser().subscribe((user) => {
             if (user) {
                 this.redirect();
             }

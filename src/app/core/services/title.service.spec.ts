@@ -24,22 +24,24 @@ describe('TitleService', () => {
                 { provide: ActivatedRoute, useValue: activatedRoute }
             ],
         });
-        titleService = TestBed.get(TitleService);
     });
 
     it('should be created', async () => {
+        titleService = TestBed.get(TitleService);
         expect(titleService).toBeTruthy();
     });
 
     it('should return the title as an observable', async () => {
-        titleService.title$.subscribe((title) => {
+        titleService = TestBed.get(TitleService);
+        titleService.getTitle().subscribe((title) => {
             expect(title).toEqual('test title');
         });
     });
 
     it('should be able to set a new title', async () => {
+        titleService = TestBed.get(TitleService);
         titleService.setTitle('new title');
-        titleService.title$.subscribe((title) => {
+        titleService.getTitle().subscribe((title) => {
             expect(title).toEqual('new title');
         });
     });
@@ -51,8 +53,8 @@ describe('TitleService', () => {
             ActivatedRoute, { useValue: routeWithoutTitle }
         );
         titleService = TestBed.get(TitleService);
-        titleService.title$.subscribe((title: string) => {
-            expect(title).toEqual('test title');
+        titleService.getTitle().subscribe((title: string) => {
+            expect(title).toEqual('go-send');
         });
     });
 });

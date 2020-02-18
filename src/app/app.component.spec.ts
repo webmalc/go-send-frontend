@@ -35,17 +35,15 @@ describe('AppComponent', () => {
             { isDarkMode: Promise.resolve(true), toggle: false },
         );
         const auth = jasmine.createSpyObj(
-            'AuthService', { login: of(true) }
+            'AuthService', {
+                login: of(true),
+                getUser: of(new User('user', 'pass')),
+                logout: null,
+            }
         );
-        auth.user$ = jasmine.createSpyObj(
-            'user$', { subscribe: of(new User('user', 'pass')) }
+        const title = jasmine.createSpyObj(
+            'TitleService', { getTitle: of('test title') }
         );
-
-        const title = jasmine.createSpyObj('TitleService', ['setTitle']);
-        title.title$ = jasmine.createSpyObj(
-            'title$', { subscribe: of('test title') }
-        );
-
 
         const router = jasmine.createSpyObj(
             'Router', ['navigateByUrl']
@@ -95,6 +93,8 @@ describe('AppComponent', () => {
         expect(statusBarSpy.styleDefault).toHaveBeenCalled();
         expect(splashScreenSpy.hide).toHaveBeenCalled();
         expect(darkModeServiceSpy.isDarkMode).toHaveBeenCalledTimes(1);
+        expect(titleSpy.getTitle).toHaveBeenCalledTimes(1);
+        expect(authSpy.getUser).toHaveBeenCalledTimes(1);
     });
 
     it('should have menu labels', async () => {
@@ -103,6 +103,25 @@ describe('AppComponent', () => {
         expect(menuItems.length).toEqual(8);
         expect(menuItems[2].textContent).toContain('Inbox');
         expect(menuItems[3].textContent).toContain('Outbox');
+    });
+
+    it('should have a title', async () => {
+        const app = fixture.nativeElement;
+        const titleTag = app.querySelector('ion-title') as HTMLElement;
+        expect(titleTag.innerText).toBe('Test Title');
+        expect(fixture.componentInstance.title).toBe('test title');
+    });
+
+    it('should have an user', async () => {
+        expect(fixture.componentInstance.user.username).toBe('user');
+    });
+
+    it('should logout an user', async () => {
+        fixture.componentInstance.logout();
+        expect(fixture.componentInstance.user).toBeNull();
+        expect(authSpy.logout).toHaveBeenCalledTimes(1);
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/auth/login');
     });
 
     it('should have urls', async () => {

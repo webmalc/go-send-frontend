@@ -27,19 +27,19 @@ export class HeadersInterceptor implements HttpInterceptor {
             return next.handle(req);
         }
 
-        return this.auth.user$.pipe(take(1)).pipe(switchMap((user: User) => {
+        return this.auth.getUser().pipe(take(1)).pipe(
+            switchMap((user: User) => {
+                let headers = req.headers
+                    .append('Content-Type', 'application/json');
 
-            let headers = req.headers
-                .append('Content-Type', 'application/json');
+                if (user) {
+                    headers = headers.set(
+                        'Authorization', this.api.getAuthHeader(user)
+                    );
+                }
 
-            if (user) {
-                headers = headers.set(
-                    'Authorization', this.api.getAuthHeader(user)
-                );
-            }
-
-            return next.handle(req.clone({ headers }));
-        }));
+                return next.handle(req.clone({ headers }));
+            }));
     }
 
     // Checks if the request URL belongs the API

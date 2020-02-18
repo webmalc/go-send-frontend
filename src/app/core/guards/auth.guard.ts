@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 
         return new Observable<boolean | UrlTree>(subscriber => {
 
-            this.auth.user$.pipe(take(1)).subscribe((user: User) => {
+            this.auth.getUser().pipe(take(1)).subscribe((user: User) => {
                 if (user) {
                     subscriber.next(true);
                 } else {

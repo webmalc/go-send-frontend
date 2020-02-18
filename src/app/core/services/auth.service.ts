@@ -14,27 +14,13 @@ export class AuthService {
     private readonly userSubject = new BehaviorSubject<User>(null);
     private user: User;
 
-
     public constructor(
         private readonly storage: Storage,
         private readonly api: ApiService,
     ) { }
 
-    // Load user from the storage
-    public async loadUser(): Promise<User> {
-        if (this.user) {
-            return Promise.resolve(this.user);
-        }
-        const data = await this.storage.get(this.STORAGE_KEY);
-        if (data) {
-            this.user = new User(data.username, data.password);
-        }
-
-        return this.user;
-    }
-
     // Get the user observable
-    public get user$(): Observable<User> {
+    public getUser(): Observable<User> {
         const fromStorage = from(this.loadUser());
 
         return concat(
@@ -65,4 +51,16 @@ export class AuthService {
         this.userSubject.next(this.user);
     }
 
+    // Load user from the storage
+    private async loadUser(): Promise<User> {
+        if (this.user) {
+            return Promise.resolve(this.user);
+        }
+        const data = await this.storage.get(this.STORAGE_KEY);
+        if (data) {
+            this.user = new User(data.username, data.password);
+        }
+
+        return this.user;
+    }
 }

@@ -15,7 +15,7 @@ describe('AuthGuard', () => {
             'Router', ['parseUrl']
         );
         const auth = jasmine.createSpyObj(
-            'AuthService', { user$: of(new User('user', 'pass')) }
+            'AuthService', { getUser: of(new User('user', 'pass')) }
         );
         TestBed.configureTestingModule({
             providers: [

@@ -4,7 +4,7 @@ import { AuthService } from '@core/services/auth.service';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { User } from '@shared/models/user';
 import { SharedModule } from '@shared/shared.module';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AuthPage } from './auth.page';
 
 
@@ -18,12 +18,10 @@ describe('AuthPage', () => {
 
     beforeEach(async(() => {
         const auth = jasmine.createSpyObj(
-            'AuthService', { login: of(true) }
+            'AuthService', {
+                login: of(true), getUser: of(null)
+            }
         );
-        auth.user$ = jasmine.createSpyObj(
-            'user$', { subscribe: of(new User('user', 'pass')) }
-        );
-
         const router = jasmine.createSpyObj(
             'Router', ['navigateByUrl']
         );
@@ -43,14 +41,38 @@ describe('AuthPage', () => {
             ],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(AuthPage);
-        component = fixture.componentInstance;
         authSpy = TestBed.get(AuthService);
         routerSpy = TestBed.get(Router);
         toastSpy = TestBed.get(ToastController);
     }));
 
     it('should create', () => {
+        fixture = TestBed.createComponent(AuthPage);
+        component = fixture.componentInstance;
         expect(component).toBeTruthy();
+        expect(authSpy.getUser).toHaveBeenCalledTimes(1);
+    });
+
+    it('should redirect if the user is authenticated', () => {
+        authSpy.getUser.and.returnValue(of(new User('test', 'test')));
+        TestBed.createComponent(AuthPage);
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/');
+    });
+
+    it('should be able to login', () => {
+        fixture = TestBed.createComponent(AuthPage);
+        component = fixture.componentInstance;
+        component.login();
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/');
+    });
+
+    it('should be able to show an error message', () => {
+        authSpy.login.and.returnValue(throwError('test error'));
+        fixture = TestBed.createComponent(AuthPage);
+        component = fixture.componentInstance;
+        component.login();
+        expect(toastSpy.create).toHaveBeenCalledTimes(1);
     });
 });
