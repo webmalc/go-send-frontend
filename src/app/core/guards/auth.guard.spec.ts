@@ -31,4 +31,31 @@ describe('AuthGuard', () => {
     it('should be created', inject([AuthGuard], (guard: AuthGuard) => {
         expect(guard).toBeTruthy();
     }));
+
+    it('should permit authenticated users', inject(
+        [AuthGuard], (guard: AuthGuard) => {
+            guard.canActivate().subscribe(result => {
+                expect(result).toBeTruthy();
+                expect(authSpy.getUser).toHaveBeenCalledTimes(1);
+            });
+        }));
+
+    it('should permit authenticated users from the child routes', inject(
+        [AuthGuard], (guard: AuthGuard) => {
+            guard.canActivateChild().subscribe(result => {
+                expect(result).toBeTruthy();
+                expect(authSpy.getUser).toHaveBeenCalledTimes(1);
+            });
+        }));
+
+    it('should redirect unauthenticated users', inject(
+        [AuthGuard], (guard: AuthGuard) => {
+            authSpy.getUser.and.returnValue(of(null));
+            guard.canActivate().subscribe(() => {
+                expect(authSpy.getUser).toHaveBeenCalledTimes(1);
+                expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(1);
+                expect(routerSpy.navigateByUrl)
+                    .toHaveBeenCalledWith('/auth/login');
+            });
+        }));
 });

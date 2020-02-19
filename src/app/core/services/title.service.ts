@@ -11,7 +11,7 @@ export class TitleService {
 
     public DEFAULT_TITLE = 'go-send';
     private readonly title = new BehaviorSubject<string>(this.DEFAULT_TITLE);
-    private title$: Observable<string> = this.title.asObservable();
+    private readonly title$: Observable<string> = this.title.asObservable();
 
     public constructor(
         private readonly router: Router,

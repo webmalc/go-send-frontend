@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
 
     public user: User;
-    public selectedIndex = 0;
     public darkMode = true;
     public title: string;
     public appPages = [
@@ -54,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     ];
 
-    private userSubscription: Subscription;
+    private readonly subscriptions: Subscription[] = [];
 
     public constructor(
         private readonly platform: Platform,
@@ -81,16 +80,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        const path = window.location.pathname.split('folder/')[1];
-        if (path !== undefined) {
-            this.selectedIndex = this.appPages.findIndex(
-                page => page.title.toLowerCase() === path.toLowerCase()
-            );
-        }
+        //
     }
 
     public ngOnDestroy(): void {
-        this.userSubscription.unsubscribe();
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     // Initializes the application
@@ -106,15 +100,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Gets the title
     private initTitle(): void {
-        this.titleService.getTitle().subscribe((title: string) => {
-            this.title = title;
-        });
+        this.subscriptions.push(
+            this.titleService.getTitle().subscribe((title: string) => {
+                this.title = title;
+            })
+        );
     }
 
     // Gets a user
     private initUser(): void {
-        this.userSubscription = this.auth.getUser().subscribe(
-            (user: User) => { this.user = user; }
+        this.subscriptions.push(
+            this.auth.getUser().subscribe(
+                (user: User) => { this.user = user; }
+            )
         );
     }
 
