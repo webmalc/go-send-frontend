@@ -4,8 +4,9 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 @NgModule({
     declarations: [],
     imports: [
-        CommonModule
+        CommonModule,
     ],
+    exports: [],
 })
 export class CoreModule {
     public constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

@@ -187,8 +187,13 @@ ion-app.dark {
 
     --ion-item-background: #1c1c1c;
     --ion-item-background-activated: #313131;
+
 }
 
+ion-backdrop {
+    --ion-backdrop-color: #000000;
+    opacity: 0.1 !important;
+}
 
 /*
    * Material Design Dark Theme
@@ -225,4 +230,13 @@ ion-app.dark {
     --ion-color-step-950: #f3f3f3;
 
     --ion-item-background: #1A1B1E;
+
+    ion-backdrop {
+        --ion-backdrop-color: #ffffff;
+        opacity: 0.05 !important;
+    }
+}
+
+.loading {
+    min-height: 10px;
 }

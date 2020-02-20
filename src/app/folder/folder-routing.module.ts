@@ -6,7 +6,7 @@ const routes: Routes = [
     {
         path: '',
         component: FolderPage,
-        data: { title: 'browse' }
+        data: { title: 'Browse' }
     }
 ];
 

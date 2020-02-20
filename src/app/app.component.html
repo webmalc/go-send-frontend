@@ -2,29 +2,30 @@
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
-        <ion-list id="inbox-list">
-            <ion-list-header>
-                <ion-label>Go-send</ion-label>
-                <ion-button *ngIf="user" (click)="logout()" color="dark">
-                    logout
-                    <ion-icon slot="end" name="log-out-outline"></ion-icon>
-                </ion-button>
-            </ion-list-header>
-          <ion-item button (click)="toggleDarkMode()">
-              <ion-label>
-                  Dark mode
-              </ion-label>
-              <ion-icon name="moon" slot="end"></ion-icon>
-          </ion-item>
+          <ion-list id="inbox-list" lines="none">
+              <ion-list-header>
+                  <ion-label>Go-send</ion-label>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item  routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" >
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+                  <ion-buttons *ngIf="user">
+                      <ion-button size="small" routerLink="/" color="dark">
+                          <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button (click)="logout()" color="dark">
+                          logout
+                          <ion-icon slot="end" name="log-out-outline"></ion-icon>
+                      </ion-button>
+                  </ion-buttons>
+              </ion-list-header>
+              <ion-item button (click)="toggleDarkMode()">
+                  <ion-label>
+                      Dark mode
+                  </ion-label>
+                  <ion-icon name="moon" slot="end"></ion-icon>
+              </ion-item>
 
+              <app-dir *ngIf="user" class="ion-padding" [path]="path" [parent]=true></app-dir>
+
+          </ion-list>
       </ion-content>
     </ion-menu>
 
@@ -39,10 +40,13 @@
                         </ion-button>
                     </ion-menu-toggle>
                 </ion-buttons>
-                <ion-title>{{ title|titlecase }}</ion-title>
+                <ion-title>{{ title }}</ion-title>
             </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding">
+        <ion-content>
+            <ion-refresher slot="fixed" (ionRefresh)="reload()">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
             <ion-router-outlet id="main-content"></ion-router-outlet>
         </ion-content>
     </div>

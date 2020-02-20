@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from '@app/app.module';
 import { environment } from '@environment/environment';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import 'reflect-metadata';
 
 
 if (environment.production) {

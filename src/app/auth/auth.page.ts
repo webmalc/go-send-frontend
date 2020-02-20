@@ -49,5 +49,4 @@ export class AuthPage implements OnInit {
         });
         toast.present();
     }
-
 }

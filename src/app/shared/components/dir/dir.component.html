@@ -1,0 +1,31 @@
+<ion-searchbar [(ngModel)]="query" (ionChange)="filterDirs()"></ion-searchbar>
+
+<div class="loading">
+    <ion-progress-bar *ngIf="loading" color="dark" type="indeterminate"></ion-progress-bar>
+</div>
+
+<ion-item *ngIf="currentPath" routerLink="/folder" [queryParams]="{path: parentPath}" routerDirection="root" lines="none">
+    <ion-label>..</ion-label>
+</ion-item>
+
+<ion-item *ngFor="let dir of filteredDirs; let i = index" [attr.id]="dir.path" routerLink="/folder" [queryParams]="{path: dir.relativePath}" routerDirection="root" lines="none" [attr.color]="(i%2 == 0) ? 'light' : ''" detail="false">
+
+    <ion-label>{{ dir.relativePath }}</ion-label>
+
+    <ion-buttons slot="end" *ngIf="!dir.loading">
+        <ion-button *ngIf="!dir.url" app-click-stop-propagation color="success" (click)="toggleDir(dir)">
+            <ion-icon slot="icon-only" name="share-social"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="dir.url" app-click-stop-propagation color="primary" (click)="showLink(dir.url)">
+            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="dir.url" app-click-stop-propagation color="danger" (click)="toggleDir(dir)">
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" *ngIf="dir.loading">
+        <ion-spinner name="dots"></ion-spinner>
+    </ion-buttons>
+
+</ion-item>

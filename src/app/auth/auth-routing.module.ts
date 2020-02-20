@@ -7,7 +7,7 @@ const routes: Routes = [
     {
         path: 'login',
         component: AuthPage,
-        data: { title: 'login' }
+        data: { title: 'Login' }
     }
 ];
 

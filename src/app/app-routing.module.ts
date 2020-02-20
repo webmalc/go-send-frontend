@@ -7,14 +7,14 @@ const routes: Routes = [
         path: '', canActivate: [AuthGuard], children: [
             {
                 path: '',
-                redirectTo: 'folder/Inbox',
+                redirectTo: 'folder',
                 pathMatch: 'full'
             },
             {
-                path: 'folder/:id',
+                path: 'folder',
                 loadChildren: () => import('./folder/folder.module')
                     .then(m => m.FolderPageModule),
-                data: { title: 'browse' }
+                data: { title: 'Browse' }
             }
         ]
     },

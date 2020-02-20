@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { DarkModeService } from '@core/services/dark-mode.service';
 import { TitleService } from '@core/services/title.service';
@@ -7,7 +7,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 import { User } from '@shared/models/user';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -15,43 +16,12 @@ import { Subscription } from 'rxjs';
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
 
     public user: User;
     public darkMode = true;
     public title: string;
-    public appPages = [
-        {
-            title: 'Inbox',
-            url: '/folder/Inbox',
-            icon: 'mail'
-        },
-        {
-            title: 'Outbox',
-            url: '/folder/Outbox',
-            icon: 'paper-plane'
-        },
-        {
-            title: 'Favorites',
-            url: '/folder/Favorites',
-            icon: 'heart'
-        },
-        {
-            title: 'Archived',
-            url: '/folder/Archived',
-            icon: 'archive'
-        },
-        {
-            title: 'Trash',
-            url: '/folder/Trash',
-            icon: 'trash'
-        },
-        {
-            title: 'Spam',
-            url: '/folder/Spam',
-            icon: 'warning'
-        }
-    ];
+    public path: Observable<string>;
 
     private readonly subscriptions: Subscription[] = [];
 
@@ -61,10 +31,16 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly statusBar: StatusBar,
         private readonly darkModeService: DarkModeService,
         private readonly router: Router,
+        private readonly activatedRoute: ActivatedRoute,
         private readonly auth: AuthService,
         private readonly titleService: TitleService,
     ) {
         this.initializeApp();
+    }
+
+    // Reloads the window
+    public reload(): void {
+        window.location.reload();
     }
 
     // Toggles the dark mode
@@ -79,10 +55,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/auth/login');
     }
 
-    public ngOnInit(): void {
-        //
-    }
-
     public ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
@@ -95,7 +67,14 @@ export class AppComponent implements OnInit, OnDestroy {
             this.initDarkMode();
             this.initUser();
             this.initTitle();
+            this.initPath();
         });
+    }
+
+    private initPath(): void {
+        this.path = this.activatedRoute.queryParamMap.pipe(map(
+            (params: ParamMap) => params.get('path')
+        ), filter(() => !!this.user));
     }
 
     // Gets the title
