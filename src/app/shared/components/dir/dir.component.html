@@ -13,13 +13,13 @@
     <ion-label>{{ dir.relativePath }}</ion-label>
 
     <ion-buttons slot="end" *ngIf="!dir.loading">
-        <ion-button *ngIf="!dir.url" app-click-stop-propagation color="success" (click)="toggleDir(dir)">
+        <ion-button *ngIf="!dir.url" appClickStopPropagation color="success" (click)="toggleDir(dir)">
             <ion-icon slot="icon-only" name="share-social"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="dir.url" app-click-stop-propagation color="primary" (click)="showLink(dir.url)">
+        <ion-button *ngIf="dir.url" appClickStopPropagation color="primary" (click)="showLink(dir.url)">
             <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="dir.url" app-click-stop-propagation color="danger" (click)="toggleDir(dir)">
+        <ion-button *ngIf="dir.url" appClickStopPropagation color="danger" (click)="toggleDir(dir)">
             <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
         </ion-button>
     </ion-buttons>

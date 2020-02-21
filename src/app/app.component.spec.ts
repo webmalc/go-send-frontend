@@ -13,7 +13,7 @@ import { User } from '@shared/models/user';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 
-import { DirComponentMock } from '@shared/mocks/dir.component.mock';
+import { DirMockComponent } from '@shared/mocks/dir.mock.component';
 
 describe('AppComponent', () => {
 
@@ -58,7 +58,7 @@ describe('AppComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            declarations: [AppComponent, DirComponentMock],
+            declarations: [AppComponent, DirMockComponent],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
                 { provide: StatusBar, useValue: statusBar },

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '@core/services/api.service';
 import { ClipboardService } from '@core/services/clipboard.service';
 import { ToastController } from '@ionic/angular';
@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
         ClipboardService,
     ],
 })
-export class DirComponent implements OnInit {
+export class DirComponent implements OnInit, OnDestroy {
 
     @Input() public parent = false;
     @Input() public path: Observable<string>;

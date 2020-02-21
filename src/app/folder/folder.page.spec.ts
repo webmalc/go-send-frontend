@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TitleService } from '@core/services/title.service';
 import { IonicModule } from '@ionic/angular';
-import { DirComponentMock } from '@shared/mocks/dir.component.mock';
+import { DirMockComponent } from '@shared/mocks/dir.mock.component';
 import { of } from 'rxjs';
 import { FolderPage } from './folder.page';
 
@@ -10,7 +10,6 @@ import { FolderPage } from './folder.page';
 describe('FolderPage', () => {
     let component: FolderPage;
     let fixture: ComponentFixture<FolderPage>;
-    let titleSpy: jasmine.SpyObj<TitleService>;
     let paramsSpy: jasmine.Spy;
 
     beforeEach(async(() => {
@@ -23,7 +22,7 @@ describe('FolderPage', () => {
             queryParamMap: of({ get: () => paramsSpy })
         };
         TestBed.configureTestingModule({
-            declarations: [FolderPage, DirComponentMock],
+            declarations: [FolderPage, DirMockComponent],
             imports: [
                 IonicModule.forRoot(),
                 RouterModule.forRoot([]),
@@ -34,7 +33,6 @@ describe('FolderPage', () => {
             ]
         }).compileComponents();
 
-        titleSpy = TestBed.get(TitleService);
         fixture = TestBed.createComponent(FolderPage);
         component = fixture.componentInstance;
         fixture.detectChanges();

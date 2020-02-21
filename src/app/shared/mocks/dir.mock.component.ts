@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
     template: ''
 })
 
-export class DirComponentMock {
+export class DirMockComponent {
     @Input() public parent = false;
     @Input() public path: Observable<string>;
 }

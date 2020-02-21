@@ -39,7 +39,7 @@ export class AppComponent implements OnDestroy {
     }
 
     // Reloads the window
-    /* istanbul ignore next */
+    // istanbul ignore next
     public reload(): void {
         location.reload();
     }
