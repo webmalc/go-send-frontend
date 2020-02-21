@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 import { User } from '@shared/models/user';
 import { Observable, Subscription } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 
 @Component({
@@ -39,8 +39,9 @@ export class AppComponent implements OnDestroy {
     }
 
     // Reloads the window
+    /* istanbul ignore next */
     public reload(): void {
-        window.location.reload();
+        location.reload();
     }
 
     // Toggles the dark mode

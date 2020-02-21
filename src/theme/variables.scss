@@ -240,3 +240,7 @@ ion-backdrop {
 .loading {
     min-height: 10px;
 }
+
+ion-toast.wide {
+    --max-width: 90%;
+}

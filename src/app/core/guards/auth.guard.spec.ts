@@ -53,8 +53,8 @@ describe('AuthGuard', () => {
             authSpy.getUser.and.returnValue(of(null));
             guard.canActivate().subscribe(() => {
                 expect(authSpy.getUser).toHaveBeenCalledTimes(1);
-                expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(1);
-                expect(routerSpy.navigateByUrl)
+                expect(routerSpy.parseUrl).toHaveBeenCalledTimes(1);
+                expect(routerSpy.parseUrl)
                     .toHaveBeenCalledWith('/auth/login');
             });
         }));

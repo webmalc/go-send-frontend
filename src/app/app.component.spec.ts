@@ -13,6 +13,8 @@ import { User } from '@shared/models/user';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 
+import { DirComponentMock } from '@shared/mocks/dir.component.mock';
+
 describe('AppComponent', () => {
 
     let statusBarSpy: jasmine.SpyObj<StatusBar>;
@@ -36,10 +38,10 @@ describe('AppComponent', () => {
         );
         const auth = jasmine.createSpyObj(
             'AuthService', {
-                login: of(true),
-                getUser: of(new User('user', 'pass')),
-                logout: null,
-            }
+            login: of(true),
+            getUser: of(new User('user', 'pass')),
+            logout: null,
+        }
         );
         const title = jasmine.createSpyObj(
             'TitleService', { getTitle: of('test title') }
@@ -49,8 +51,14 @@ describe('AppComponent', () => {
             'Router', ['navigateByUrl']
         );
 
+        const activatedRoute = {
+            queryParamMap: of(
+                { get: jasmine.createSpy('params').and.returnValue('path') }
+            )
+        };
+
         TestBed.configureTestingModule({
-            declarations: [AppComponent],
+            declarations: [AppComponent, DirComponentMock],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
                 { provide: StatusBar, useValue: statusBar },
@@ -61,11 +69,7 @@ describe('AppComponent', () => {
                 { provide: TitleService, useValue: title },
                 { provide: Router, useValue: router },
                 { provide: ComponentFixtureAutoDetect, useValue: true },
-                {
-                    provide: ActivatedRoute, useValue: {
-                        params: of({ id: 'Inbox' })
-                    }
-                },
+                { provide: ActivatedRoute, useValue: activatedRoute },
             ],
             imports: [
                 RouterTestingModule.withRoutes([]),
@@ -97,18 +101,10 @@ describe('AppComponent', () => {
         expect(authSpy.getUser).toHaveBeenCalledTimes(1);
     });
 
-    it('should have menu labels', async () => {
-        const app = fixture.nativeElement;
-        const menuItems = app.querySelectorAll('ion-label');
-        expect(menuItems.length).toEqual(8);
-        expect(menuItems[2].textContent).toContain('Inbox');
-        expect(menuItems[3].textContent).toContain('Outbox');
-    });
-
     it('should have a title', async () => {
         const app = fixture.nativeElement;
         const titleTag = app.querySelector('ion-title') as HTMLElement;
-        expect(titleTag.innerText).toBe('Test Title');
+        expect(titleTag.innerText).toBe('test title');
         expect(fixture.componentInstance.title).toBe('test title');
     });
 
@@ -124,15 +120,19 @@ describe('AppComponent', () => {
         expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/auth/login');
     });
 
-    it('should have urls', async () => {
-        const app = fixture.nativeElement;
-        const menuItems = app.querySelectorAll('ion-item');
-        expect(menuItems.length).toEqual(7);
-        expect(menuItems[1].getAttribute('ng-reflect-router-link'))
-            .toEqual('/folder/Inbox');
-        expect(menuItems[2].getAttribute('ng-reflect-router-link'))
-            .toEqual('/folder/Outbox');
+    it('should update the path', async () => {
+        fixture.componentInstance.path.subscribe((path: string) => {
+            expect(path).toBe('path');
+        });
     });
+
+    it('should not update the path if the user is not authenticated',
+        async () => {
+            fixture.componentInstance.user = null;
+            fixture.componentInstance.path.subscribe((path: string) => {
+                expect(path).toBeFalsy();
+            });
+        });
 
     it('should toggle dark mode', async () => {
         let app = fixture.nativeElement;

@@ -71,8 +71,10 @@ export class DirComponent implements OnInit {
     public async showLink(url: string): Promise<void> {
         this.clipboard.copy(url);
         const toast = await this.toastController.create({
-            header: 'The link to the directory has been copied to the clipboard',
+            header: 'The link to the directory has been copied.',
             message: url,
+            cssClass: 'wide',
+            duration: 4000,
             buttons: [
                 {
                     icon: 'close-circle',
@@ -89,8 +91,8 @@ export class DirComponent implements OnInit {
     // Sets the parent and current path
     private setPaths(path: string): string {
         if (path) {
-            path = path.slice(0, -1);
-            this.parentPath = path.substring(0, path.lastIndexOf('/') + 1);
+            const temp = path.slice(0, -1);
+            this.parentPath = temp.substring(0, temp.lastIndexOf('/') + 1);
         }
         this.currentPath = this.parent ? this.parentPath : path;
 

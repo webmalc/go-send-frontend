@@ -12,8 +12,4 @@ export class Dir {
     public url: string;
 
     public loading = false;
-
-    public getRoute(): string {
-        return '/folder/' + this.relativePath.replace(/\//g, '**');
-    }
 }
